@@ -22,7 +22,7 @@ The Social Media Publisher plugin automates sharing WP posts to your Facebook pa
 Whether you're managing a personal blog or a business website, WP Facebook Auto Publish is designed to simplify your social media strategy and improve your workflow.
 
 == Installation ==
-1. Upload the `wp-facebook-auto-publish` folder to the `/wp-content/plugins/` directory.
+1. Upload the `social-media-publisher` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WP.
 3. Go to the plugin settings page and configure your Facebook API credentials.
 4. Start publishing posts directly to your Facebook page.
