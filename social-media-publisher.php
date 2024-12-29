@@ -211,12 +211,12 @@ class wpsmp_social_media_publisher{
 		]);
 
 		if (is_wp_error($response)) {
-			throw new Exception($response->get_error_message());
+			throw new Exception(esc_html($response->get_error_message()));
 		}
 
 		$body = json_decode(wp_remote_retrieve_body($response), true);
 		if (isset($body['error'])) {
-			throw new Exception($body['error']['message']);
+			throw new Exception(esc_html($body['error']['message']));
 		}
 
 		return $body;
