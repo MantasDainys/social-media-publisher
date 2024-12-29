@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'mantasdainys/wp-facebook-auto-publish',
+        'name' => 'mantasdainys/social-media-publisher',
         'pretty_version' => '1.0.0+no-version-set',
         'version' => '1.0.0.0',
         'reference' => NULL,
@@ -10,16 +10,7 @@
         'dev' => true,
     ),
     'versions' => array(
-        'facebook/graph-sdk' => array(
-            'pretty_version' => '5.7.0',
-            'version' => '5.7.0.0',
-            'reference' => '2d8250638b33d73e7a87add65f47fabf91f8ad9b',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../facebook/graph-sdk',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'mantasdainys/wp-facebook-auto-publish' => array(
+        'mantasdainys/social-media-publisher' => array(
             'pretty_version' => '1.0.0+no-version-set',
             'version' => '1.0.0.0',
             'reference' => NULL,

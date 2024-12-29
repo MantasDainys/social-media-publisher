@@ -14,82 +14,63 @@
  * @package social-media-publisher
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) { 
 	die( 'Invalid request.' );
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Facebook\Facebook;
-use Facebook\Exceptions\FacebookResponseException;
-use Facebook\Exceptions\FacebookSDKException;
+register_activation_hook( __FILE__, array( 'wpsmp_social_media_publisher', 'wpsmp_options' ) );
 
-register_activation_hook( __FILE__, array( 'SocialMediaPublisher', 'facebook_options' ) );
-
-/**
- * @todo Remember me
- */
-class SocialMediaPublisher {
+class wpsmp_social_media_publisher{
 
 	private $appId;
 	private $appSecret;
 	private $pageAccessToken;
 	private $pageId;
-	private $repo_url = 'https://api.github.com/repos/MantasDainys/social-media-publisher/releases/latest';
-	private $plugin_slug = 'social-media-publisher';
 
-	public static function facebook_options() {
-		add_option( 'wp_facebook_auto_publish_app_id', '' );
-		add_option( 'wp_facebook_auto_publish_app_secret', '' );
-		add_option( 'wp_facebook_auto_publish_page_access_token', '' );
-		add_option( 'wp_facebook_auto_publish_page_id', '' );
+	public static function wpsmp_options() {
+		add_option( 'wpsmp_app_id', '' );
+		add_option( 'wpsmp_app_secret', '' );
+		add_option( 'wpsmp_page_access_token', '' );
+		add_option( 'wpsmp_page_id', '' );
 	}
 
 	public function __construct() {
-		add_action( 'add_meta_boxes', [ $this, 'add_facebook_publish_meta_box' ] );
-		add_action( 'save_post', [ $this, 'save_facebook_publish_meta_box_data' ] );
-		add_action( 'admin_notices', [ $this, 'custom_admin_error_notice' ] );
+		add_action( 'add_meta_boxes', [ $this, 'wpsmp_add_publish_meta_box' ] );
+		add_action( 'save_post', [ $this, 'wpsmp_save_publish_meta_box_data' ] );
+		add_action( 'admin_notices', [ $this, 'wpsmp_admin_error_notice' ] );
 
-
-		$this->appId           = get_option( 'wp_facebook_auto_publish_app_id' );
-		$this->appSecret       = get_option( 'wp_facebook_auto_publish_app_secret' );
-		$this->pageAccessToken = get_option( 'wp_facebook_auto_publish_page_access_token' );
-		$this->pageId          = get_option( 'wp_facebook_auto_publish_page_id' );
+		$this->appId           = get_option( 'wpsmp_app_id' );
+		$this->appSecret       = get_option( 'wpsmp_app_secret' );
+		$this->pageAccessToken = get_option( 'wpsmp_page_access_token' );
+		$this->pageId          = get_option( 'wpsmp_page_id' );
 
 	}
 
-	public static function get_plugin_version() {
-		$plugin_file = __FILE__;
-		$plugin_data = get_file_data( $plugin_file, [
-			'Version' => 'Version',
-		]);
-		return $plugin_data['Version'] ?? 'Unknown';
-	}
-
-
-	public function add_facebook_publish_meta_box() {
+	public function wpsmp_add_publish_meta_box() {
 		add_meta_box(
-			'facebook_publish_meta_box',
+			'wpsmp_publish_meta_box',
 			__( 'Publish on Facebook', 'social-media-publisher' ),
-			[ $this, 'facebook_publish_meta_box_callback' ],
+			[ $this, 'wpsmp_publish_meta_box_callback' ],
 			'post',
 			'side',
 			'high'
 		);
 	}
 
-	public function facebook_publish_meta_box_callback( $post ) {
-		$value = get_post_meta( $post->ID, '_facebook_publish', true );
-		echo '<label for="facebook_publish">';
-		echo '<input type="checkbox" id="facebook_publish" name="facebook_publish" value="1" ' . esc_attr( checked( 1, $value, false ) ) . ' />';
+	public function wpsmp_publish_meta_box_callback( $post ) {
+		$value = get_post_meta( $post->ID, '_wpsmp_publish', true );
+		echo '<label for="wpsmp_publish">';
+		echo '<input type="checkbox" id="wpsmp_publish" name="wpsmp_publish" value="1" ' . esc_attr( checked( 1, $value, false ) ) . ' />';
 		esc_html_e( 'Publish this post on the FB page', 'social-media-publisher' );
 		echo '</label>';
-		wp_nonce_field( 'facebook_publish_nonce_action', 'facebook_publish_nonce_name' );
+		wp_nonce_field( 'wpsmp_publish_nonce_action', 'wpsmp_publish_nonce_name' );
 	}
 
-	public function save_facebook_publish_meta_box_data( $post_id ) {
+	public function wpsmp_save_publish_meta_box_data( $post_id ) {
 
-		if ( ! isset( $_POST['facebook_publish_nonce_name'] ) || ! check_admin_referer( 'facebook_publish_nonce_action', 'facebook_publish_nonce_name' ) ) {
+		if ( ! isset( $_POST['wpsmp_publish_nonce_name'] ) || ! check_admin_referer( 'wpsmp_publish_nonce_action', 'wpsmp_publish_nonce_name' ) ) {
 			return;
 		}
 
@@ -100,18 +81,18 @@ class SocialMediaPublisher {
 			return;
 		}
 
-		if ( isset( $_POST['facebook_publish'] ) ) {
-			$value = get_post_meta( $post_id, '_facebook_publish', true );
+		if ( isset( $_POST['wpsmp_publish'] ) ) {
+			$value = get_post_meta( $post_id, '_wpsmp_publish', true );
 			if ( ! $value ) {
-				update_post_meta( $post_id, '_facebook_publish', 1 );
-				$this->publish_post_to_facebook( $post_id );
+				update_post_meta( $post_id, '_wpsmp_publish', 1 );
+				$this->wpspm_publish_post_to_facebook( $post_id );
 			}
 		} else {
-			update_post_meta( $post_id, '_facebook_publish', 0 );
+			update_post_meta( $post_id, '_wpsmp_publish', 0 );
 		}
 	}
 
-	function get_post_gallery_images_full( $post ) {
+	function wpsmp_get_post_gallery_images_full( $post ) {
 
 		if ( ! has_shortcode( $post->post_content, 'gallery' ) ) {
 			return [];
@@ -133,85 +114,121 @@ class SocialMediaPublisher {
 		return $images;
 	}
 
-	private function publish_post_to_facebook( $post_id ) {
+	private function wpspm_validate_params() {
 
-		$post = get_post( $post_id );
+		if (!$this->appId) {
+			set_transient('wpsmp_error', __('AppId is missing', 'social-media-publisher'), 30);
+			return false;
+		}
 
-		$fb = new Facebook( [
-			'app_id'                => $this->appId,
-			'app_secret'            => $this->appSecret,
-			'default_graph_version' => 'v21.0',
-		] );
+		if (!$this->appSecret) {
+			set_transient('wpsmp_error', __('AppSecret is missing', 'social-media-publisher'), 30);
+			return false;
+		}
 
-		$text = preg_replace( '/\[gallery[^\]]*\]/', '', $post->post_content );
+		if (!$this->pageAccessToken) {
+			set_transient('wpsmp_error', __('pageAccessToken is missing', 'social-media-publisher'), 30);
+			return false;
+		}
+
+		if (!$this->pageId) {
+			set_transient('wpsmp_error', __('Page ID is missing', 'social-media-publisher'), 30);
+			return false;
+		}
+
+		return true;
+	}
+
+	private function wpspm_publish_post_to_facebook($post_id) {
+
+		if (!$this->wpspm_validate_params()) {
+			return;
+		}
+
+		$post = get_post($post_id);
+		$text = preg_replace('/\[gallery[^\]]*\]/', '', $post->post_content);
 
 		$postData = [
-			'message'   => $post->post_title . "\n\n" . wp_strip_all_tags( $text ),
-			'published' => false
+			'message' => $post->post_title . "\n\n" . wp_strip_all_tags($text),
+			'published' => false,
 		];
 
 		$attached_media = [];
-		$gallery_images = $this->get_post_gallery_images_full( $post );
+		$gallery_images = $this->wpsmp_get_post_gallery_images_full($post);
 
-		if ( ! empty( $gallery_images ) ) {
-			foreach ( $gallery_images as $index => $image_url ) {
+		if (!empty($gallery_images)) {
+			foreach ($gallery_images as $index => $image_url) {
 				try {
-					$postData['url']       = $image_url;
-					$postData['published'] = false;
-					$photoResponse         = $fb->post( '/' . $this->pageId . '/photos', $postData, $this->pageAccessToken );
-					$photoId = $photoResponse->getGraphNode()['id'];
-					$attached_media[] = [ 'media_fbid' => $photoId ];
-				} catch ( FacebookResponseException $e ) {
-					set_transient( 'fb_error', 'FacebookResponseException: ' . $e->getMessage(), 30 );
-				} catch ( FacebookSDKException $e ) {
-					set_transient( 'fb_error', 'FacebookResponseException: ' . $e->getMessage(), 30 );
+					$postData['url'] = $image_url;
+
+					$photoResponse = $this->wpsmp_send_request('/' . $this->pageId . '/photos', $postData);
+
+					if (!empty($photoResponse['id'])) {
+						$attached_media[] = ['media_fbid' => $photoResponse['id']];
+					}
+				} catch (Exception $e) {
+					set_transient('wpsmp_error', __('Facebook API Error: ', 'social-media-publisher') . $e->getMessage(), 30);
 				}
 			}
 		}
 
-		if ( ! empty( $attached_media ) ) {
+		if (!empty($attached_media)) {
 			try {
 				$postData['attached_media'] = $attached_media;
-				$postData['published']      = true;
-				$fb->post( '/' . $this->pageId . '/feed', $postData, $this->pageAccessToken );
-			} catch ( FacebookResponseException $e ) {
-				set_transient( 'fb_error', 'FacebookResponseException: ' . $e->getMessage(), 30 );
-			} catch ( FacebookSDKException $e ) {
-				set_transient( 'fb_error', 'FacebookResponseException: ' . $e->getMessage(), 30 );
+				$postData['published'] = true;
+				$this->wpsmp_send_request('/' . $this->pageId . '/feed', $postData);
+			} catch (Exception $e) {
+				set_transient('wpsmp_error', __('Facebook API Error: ', 'social-media-publisher') . $e->getMessage(), 30);
 			}
 		} else {
-			$thumbnail_id = get_post_thumbnail_id( $post_id );
-			if ( $thumbnail_id ) {
-				$thumbnail_url = wp_get_attachment_image_src( $thumbnail_id, 'full' )[0];
+			$thumbnail_id = get_post_thumbnail_id($post_id);
+			if ($thumbnail_id) {
+				$thumbnail_url = wp_get_attachment_image_src($thumbnail_id, 'full')[0];
 				try {
-					$postData['url']       = $thumbnail_url;
+					$postData['url'] = $thumbnail_url;
 					$postData['published'] = true;
-					$fb->post( '/' . $this->pageId . '/photos', $postData, $this->pageAccessToken );
-				} catch ( FacebookResponseException $e ) {
-					set_transient( 'fb_error', 'FacebookResponseException: ' . $e->getMessage(), 30 );
-				} catch ( FacebookSDKException $e ) {
-					set_transient( 'fb_error', 'FacebookResponseException: ' . $e->getMessage(), 30 );
+					$this->wpsmp_send_request('/' . $this->pageId . '/photos', $postData);
+				} catch (Exception $e) {
+					set_transient('wpsmp_error', __('Facebook API Error: ', 'social-media-publisher') . $e->getMessage(), 30);
 				}
 			} else {
 				try {
 					$postData['published'] = true;
-					$fb->post( '/' . $this->pageId . '/feed', $postData, $this->pageAccessToken );
-				} catch ( FacebookResponseException $e ) {
-					set_transient( 'fb_error', 'FacebookResponseException: ' . $e->getMessage(), 30 );
-				} catch ( FacebookSDKException $e ) {
-					set_transient( 'fb_error', 'FacebookResponseException: ' . $e->getMessage(), 30 );
+					$this->wpsmp_send_request('/' . $this->pageId . '/feed', $postData);
+				} catch (Exception $e) {
+					set_transient('wpsmp_error', __('Facebook API Error: ', 'social-media-publisher') . $e->getMessage(), 30);
 				}
 			}
 		}
 	}
 
-	public function custom_admin_error_notice() {
-		$error = get_transient( 'fb_error' );
+	private function wpsmp_send_request($endpoint, $params) {
+		$url = 'https://graph.facebook.com/v21.0' . $endpoint;
+		$params['access_token'] = $this->pageAccessToken;
+
+		$response = wp_remote_post($url, [
+			'body' => $params,
+		]);
+
+		if (is_wp_error($response)) {
+			throw new Exception($response->get_error_message());
+		}
+
+		$body = json_decode(wp_remote_retrieve_body($response), true);
+		if (isset($body['error'])) {
+			throw new Exception($body['error']['message']);
+		}
+
+		return $body;
+	}
+
+	public function wpsmp_admin_error_notice() {
+		$error = get_transient( 'wpsmp_error' );
 		if ( ! empty( $error ) ) {
 			echo '<div class="notice notice-error"><p>' . esc_html( $error ) . '</p></div>';
-			delete_transient( 'fb_error' );
+			delete_transient( 'wpsmp_error' );
 		}
 	}
 }
 
-new SocialMediaPublisher();
+new wpsmp_social_media_publisher();

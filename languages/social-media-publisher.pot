@@ -1,0 +1,62 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Social Media Publisher\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-29 10:19+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.14; wp-6.7.1\n"
+"X-Domain: social-media-publisher"
+
+#: social-media-publisher.php:120
+msgid "AppId is missing"
+msgstr ""
+
+#: social-media-publisher.php:125
+msgid "AppSecret is missing"
+msgstr ""
+
+#. Description of the plugin
+msgid "Automatically publish WP posts to social media platform"
+msgstr ""
+
+#: social-media-publisher.php:170 social-media-publisher.php:181
+#: social-media-publisher.php:192 social-media-publisher.php:199
+msgid "Facebook API Error: "
+msgstr ""
+
+#. URI of the plugin
+msgid "https://github.com/MantasDainys/social-media-publisher"
+msgstr ""
+
+#. Author of the plugin
+msgid "Mantas Dainys"
+msgstr ""
+
+#: social-media-publisher.php:135
+msgid "Page ID is missing"
+msgstr ""
+
+#: social-media-publisher.php:130
+msgid "pageAccessToken is missing"
+msgstr ""
+
+#: social-media-publisher.php:54
+msgid "Publish on Facebook"
+msgstr ""
+
+#: social-media-publisher.php:66
+msgid "Publish this post on the FB page"
+msgstr ""
+
+#. Name of the plugin
+msgid "Social Media Publisher"
+msgstr ""

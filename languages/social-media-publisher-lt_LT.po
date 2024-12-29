@@ -1,0 +1,62 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Social Media Publisher\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-29 10:19+0000\n"
+"PO-Revision-Date: 2024-12-29 10:25+0000\n"
+"Last-Translator: Mantas Dainys\n"
+"Language-Team: Lithuanian\n"
+"Language: lt_LT\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 "
+"&&(n%100<10||n%100 >= 20)? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.14; wp-6.7.1\n"
+"X-Domain: social-media-publisher"
+
+#: social-media-publisher.php:120
+msgid "AppId is missing"
+msgstr "Parametras AppId  nerastas"
+
+#: social-media-publisher.php:125
+msgid "AppSecret is missing"
+msgstr "Parametras AppSecret nerastas"
+
+#. Description of the plugin
+msgid "Automatically publish WP posts to social media platform"
+msgstr "Automatiškai publikuoti WP įrašus socialinių tinklų platformoje"
+
+#: social-media-publisher.php:170 social-media-publisher.php:181
+#: social-media-publisher.php:192 social-media-publisher.php:199
+msgid "Facebook API Error: "
+msgstr "Facebook API klaida:"
+
+#. URI of the plugin
+msgid "https://github.com/MantasDainys/social-media-publisher"
+msgstr "https://github.com/MantasDainys/social-media-publisher"
+
+#. Author of the plugin
+msgid "Mantas Dainys"
+msgstr "Mantas Dainys"
+
+#: social-media-publisher.php:135
+msgid "Page ID is missing"
+msgstr "Parametras Page ID nerastas"
+
+#: social-media-publisher.php:130
+msgid "pageAccessToken is missing"
+msgstr "Parametras pageAccessToken nerastas"
+
+#: social-media-publisher.php:54
+msgid "Publish on Facebook"
+msgstr "Publikuoti „Facebook“ tinkle"
+
+#: social-media-publisher.php:66
+msgid "Publish this post on the FB page"
+msgstr "Publikuoti šį įrašą FB puslapyje"
+
+#. Name of the plugin
+msgid "Social Media Publisher"
+msgstr "Socialinių tinklų leidėjas"
