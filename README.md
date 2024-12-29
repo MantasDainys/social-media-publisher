@@ -33,5 +33,5 @@ Yes, the plugin allows you to customize the content shared on Facebook, includin
 Yes, this plugin is completely free and open-source.
 
 ### Changelog
-- 1.0.0 
-* Initial release of the plugin.
+- 1.0.1 
+Initial release of the plugin.
