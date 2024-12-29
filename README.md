@@ -14,7 +14,7 @@ time and boosting audience reach.
 
 Whether you're managing a personal blog or a business website, Social Media Publisher is designed to simplify your
 social media strategy and improve your workflow.
-
+f1.0.0
 ### Installation:
 
 1. Upload the `social-media-publisher` folder to the `/wp-content/plugins/` directory.
