@@ -1,6 +1,6 @@
 # Social Media Publisher
 
-## About
+### About
 
 The Social Media Publisher plugin automates sharing WP posts to your Facebook page via the API, saving
 time and boosting audience reach.
