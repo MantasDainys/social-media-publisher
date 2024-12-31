@@ -5,7 +5,7 @@
  * GitHub Plugin URI: https://github.com/MantasDainys/social-media-publisher
  * GitHub Branch: main
  * Description: Automatically publish WP posts to social media platform
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Mantas Dainys
  * Text Domain: social-media-publisher
  * Domain Path: /languages
